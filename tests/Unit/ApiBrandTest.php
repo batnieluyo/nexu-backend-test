@@ -33,9 +33,9 @@ class ApiBrandTest extends TestCase
     }
 
     /**
-     * Create brand
+     * Validate the brand name are unique
      */
-    public function test_api_create_2_brand_successful_response(): void
+    public function test_api_validate_unique_name_brand(): void
     {
         $this->postJson('/brands', [
             'name' => 'Toyota'
@@ -48,5 +48,32 @@ class ApiBrandTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonPath('message', 'The name has already been taken.');
+    }
+
+    /**
+     * Show all the brands
+     */
+    public function test_api_list_brands(): void
+    {
+        $this->postJson('/brands', [
+            'name' => 'Toyota'
+        ]);
+
+        $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response = $this->getJson('/brands');
+
+        $response->dump();
+
+        $response->assertStatus(200);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has(2)->each(fn (AssertableJson $json) =>
+                    $json->hasAll([ 'id', 'name', 'average_price'])
+                )
+            );
     }
 }
