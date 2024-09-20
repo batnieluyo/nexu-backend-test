@@ -108,8 +108,6 @@ class ApiBrandTest extends TestCase
 
         $response = $this->get('/brands');
 
-        $response->dump();
-
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
