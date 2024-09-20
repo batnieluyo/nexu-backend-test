@@ -35,10 +35,77 @@ class ApiModelTest extends TestCase
 
         $response = $this->postJson("brands/$brand/models", [
             'name' => 'Kia Seltos 2024 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(201)->assertJsonPath('name', 'Kia Seltos 2024 SX');
+    }
+
+    /**
+     * API validate Create model with average_price lt 100,000
+     */
+    public function test_api_create_model_average_price_error_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => fake()->numberBetween(1, 99999)
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonPath('message', 'The average price field must be at least 100000.');
+    }
+
+    /**
+     * API validate create model pass with average_price field not present
+     */
+    public function test_api_create_model_average_price_not_present_successful_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+        ]);
+
+        $response->assertStatus(201)
+            ->assertJsonPath('name', 'Kia Seltos 2024 SX')
+            ->assertJsonPath('average_price', null);
+    }
+
+    /**
+     * API validate create model  with average_price field present but is null
+     */
+    public function test_api_create_model_average_price_present_but_null_successful_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => null
+        ]);
+
+        $response->assertStatus(201)
+            ->assertJsonPath('name', 'Kia Seltos 2024 SX')
+            ->assertJsonPath('average_price', null);
     }
 
     /**

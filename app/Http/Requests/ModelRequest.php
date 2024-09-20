@@ -35,7 +35,7 @@ class ModelRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:1', 'max:255', 'unique:brand_models,name'],
             'slug' => ['required', 'string'],
-            'average_price' => ['required', 'numeric', 'min:1', 'max:9999999'],
+            'average_price' => ['sometimes', 'nullable', 'numeric', 'min:100000', 'max:9999999'],
         ];
     }
 }
