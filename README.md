@@ -1,111 +1,115 @@
-# Nexu Backend Coding Exercise
-Our goal is to give you a small coding challenge that gives you a chance to show off your skills while giving you an idea of some of the problems that you may encounter at Nexu. We know you're busy with life, so we hope that you can spend around 2 hours working through this exercise. We don't expect you to finish in 2 hours, so don't worry if you can't. Submit what you have along with some notes on your thoughts and how you would proceed if you had more time. Most importantly, try to have some fun with it!
+# Nexu API on Laravel 11.x
 
-## Overview
-You just got hired to join the *cool* engineering team at *Nexu*! The first story in your sprint backlog is to build a backend application for an already existing frontend. The frontend needs the next routes:
+# Live site
+You can visit the live site at :
 
+https://nexu-api.cluster-apps.dev
 
+with the same resources:
 ```
-                              GET    /brands
-                              GET    /brands/:id/models
-                              POST   /brands
-                              POST   /brands/:id/models
-                              PUT    /models/:id
-                              GET    /models
-```
+GET    /brands
+POST   /brands
 
-#### GET /brands
+GET    /brands/:id/models
+POST   /brands/:id/models
 
-List all brands 
-```json
-[
-  {"id": 1, "nombre": "Acura", "average_price": 702109},
-  {"id": 2, "nombre": "Audi", "average_price": 630759},
-  {"id": 3, "nombre": "Bentley", "average_price": 3342575},
-  {"id": 4, "nombre": "BMW", "average_price": 858702},
-  {"id": 5, "nombre": "Buick", "average_price": 290371},
-  "..."
-]
-```
-The average price of each brand is the average of its models average prices
-
-#### GET /brands/:id/models
-
-List all models of the brand
-```json
-[
-  {"id": 1, "name": "ILX", "average_price": 303176},
-  {"id": 2, "name": "MDX", "average_price": 448193},
-  {"id": 1264, "name": "NSX", "average_price": 3818225},
-  {"id": 3, "name": "RDX", "average_price": 395753},
-  {"id": 354, "name": "RL", "average_price": 239050}
-]
+GET    /models
+PUT    /models/:id
 ```
 
-#### POST /brands
+# Development
 
-You may add new brands. A brand name must be unique.
+## Prerequisites
 
-```json
-{"name": "Toyota"}
+Before you begin, ensure you have the following installed on your machine:
+
+* **Docker Desktop:** Laravel Sail requires Docker for containerization.
+
+## Step-by-Step Guide
+
+### 1. Clone the Project
+
+```bash
+git clone https://github.com/batnieluyo/laravel-nexu.git
+
+cd laravel-nexu
 ```
 
-If a brand name is already in use return a response code and error message reflecting it.
+### 2. Install Dependencies
 
+Install the PHP dependencies required by Laravel via Composer. If Composer is not installed globally, you can run it through Docker using Sail:
 
-#### POST /brands/:id/models
-
-You may add new models to a brand. A model name must be unique inside a brand.
-
-```json
-{"name": "Prius", "average_price": 406400}
-```
-If the brand id doesn't exist return a response code and error message reflecting it.
-
-If the model name already exists for that brand return a response code and error message reflecting it.
-
-Average price is optional, if supply it must be greater than 100,000.
-
-
-#### PUT /models/:id
-
-You may edit the average price of a model.
-
-```json
-{"average_price": 406400}
-```
-The average_price must be greater then 100,000.
-
-#### GET /models?greater=&lower=
-
-List all models. 
-If greater param is included show all models with average_price greater than the param
-If lower param is included show all models with average_price lower than the param
-```
-# /models?greater=380000&lower=400000
-```
-```json
-[
-  {"id": 1264, "name": "NSX", "average_price": 3818225},
-  {"id": 3, "name": "RDX", "average_price": 395753}
-]
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs
 ```
 
-- Code all the endpoints and the logic needed
+This command will install all necessary dependencies in the Docker environment.
 
-- Create a database to store this information
+### 3. Create a .env File
 
-- Populate the database from the json included in this repository
+Copy the .env.example file to .env and set your environment variables, such as database connection details, application key, etc.
 
-## Requirements
-- your code should be linted
-- your code should include at least a couple of tests
-- your code should include a `README.md` file in the root with instructions for building, running, and testing. It can also include notes on your thought process and any issues you may have run into.
+```bash
+cp .env.example .env
+```
 
-## Submission
-Please upload this repository to Github and submit to @remigioamc when complete. Also, we would love your feedback, so feel free to share your thoughts on the exercise!
+### 4. Start Laravel Sail
+You can bring up the Laravel Sail environment by running:
 
-## Bonus
-Deploy your application so we can test it against our frontend. Share the URL.
+```bash
+FORWARD_DB_PORT=3307 APP_PORT=89 ./vendor/bin/sail up
 
+# FORWARD_DB_PORT=3307 APP_PORT=89 ./vendor/bin/sail up -d
+```
+* The -d flag will run Sail in detached mode, which allows the containers to run in the background.
 
+### Step: Running migrations and seeder
+You need run the migrations and populate the database running the next commands:
+
+```bash
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan app:import-models
+```
+
+### Step 5: Accessing the Application
+Once Sail is up, your Laravel application should be running at http://0.0.0.0:89].
+
+**important:** sails always return the internal port at 80 as default on console.
+
+Visit http://0.0.0.0:89 on your browser
+
+## Disclaimer
+
+## Run tests on salil
+if you need run the unit tests only run the next command:
+
+```
+FORWARD_DB_PORT=3307 ./vendor/bin/sail artisan test --coverage --stop-on-failure
+```
+
+### Rebuilding Sail Images
+
+Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software are up to date. You may accomplish this using the build command:
+
+```bash
+docker compose down -v
+
+./vendor/bin/sail build --no-cache
+ 
+FORWARD_DB_PORT=3307 APP_PORT=89 ./vendor/bin/sail up
+
+# FORWARD_DB_PORT=3307 APP_PORT=89 ./vendor/bin/sail up -d
+```
+
+## Troubleshooting
+
+### Docker Not Running
+Ensure Docker is running on your machine before executing any Sail commands. If Docker is not running, Sail will fail to start.
+
+### Missing .env Variables
+Ensure that all the required environment variables are set up in your .env file, particularly APP_KEY, DB_CONNECTION, and DB_HOST.
