@@ -66,6 +66,13 @@ Visit http://0.0.0.0:89 on your browser
 
 ## Disclaimer
 
+## Run tests on salil
+if you need run the unit tests only run the next command:
+
+```
+FORWARD_DB_PORT=3307 ./vendor/bin/sail artisan test --coverage
+```
+
 ### Rebuilding Sail Images
 
 Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software are up to date. You may accomplish this using the build command:
