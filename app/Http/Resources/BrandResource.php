@@ -21,11 +21,11 @@ class BrandResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            // TODO: Create the AVG
-            'average_price' => null,
+            'average_price' => $this->models->avg('price'),
         ];
     }
 }

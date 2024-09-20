@@ -16,7 +16,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return new BrandCollection(Brand::all());
+        return new BrandCollection(Brand::with('models:average_price')->all());
     }
 
     /**
