@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
-});
+Route::get('/', fn() => ['version' => '1.0.0'])->withoutMiddleware(['auth', 'web']);
 
-require __DIR__.'/auth.php';
+require __DIR__.'/api.php';
