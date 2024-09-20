@@ -70,7 +70,7 @@ Visit http://0.0.0.0:89 on your browser
 if you need run the unit tests only run the next command:
 
 ```
-FORWARD_DB_PORT=3307 ./vendor/bin/sail artisan test --coverage
+FORWARD_DB_PORT=3307 ./vendor/bin/sail artisan test --coverage --stop-on-failure
 ```
 
 ### Rebuilding Sail Images

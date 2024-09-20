@@ -139,7 +139,7 @@ class ApiModelTest extends TestCase
     {
         $response = $this->postJson("brands/999999/models", [
             'name' => 'Kia Seltos 2024 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(404)
@@ -161,7 +161,7 @@ class ApiModelTest extends TestCase
 
         $response = $this->postJson("brands/$brand/models", [
             'name' => 'Kia Seltos 2024 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(201)->assertJsonPath('name', 'Kia Seltos 2024 SX');
@@ -189,14 +189,14 @@ class ApiModelTest extends TestCase
 
         $this->postJson("brands/$brand/models", [
             'name' => 'Kia Seltos 2024 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(201);
 
         $response = $this->postJson("brands/$brand/models", [
             'name' => 'Kia Sportage 2025 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(201);
@@ -248,7 +248,7 @@ class ApiModelTest extends TestCase
 
         $response = $this->postJson("brands/$brand/models", [
             'name' => 'Kia Sportage 2025 SX',
-            'average_price' => fake()->numberBetween(1, 9999999)
+            'average_price' => fake()->numberBetween(100000, 9999999)
         ]);
 
         $response->assertStatus(201);

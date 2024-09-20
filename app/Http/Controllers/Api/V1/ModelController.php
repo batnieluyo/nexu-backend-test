@@ -34,14 +34,6 @@ class ModelController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(ModelRequest $request, $brandId)
@@ -50,22 +42,6 @@ class ModelController extends Controller
         $model = $brand->models()->create($request->validated());
 
         return (new ModelResource($model))->response()->setStatusCode(201);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -80,11 +56,4 @@ class ModelController extends Controller
         return new ModelResource($model);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
