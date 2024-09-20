@@ -109,6 +109,30 @@ class ApiModelTest extends TestCase
     }
 
     /**
+     * API validate create model  with average_price field present but is null
+     */
+    public function test_api_create_model_average_price_value_string_present_fail_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => "TEST VALUE 100000"
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonPath('message', 'The average price field must be a number. (and 1 more error)')
+            ->assertJsonPath('errors.average_price.0', 'The average price field must be a number.')
+            ->assertJsonPath('errors.average_price.1', 'The average price field must be at least 100000.');
+    }
+
+    /**
      * API Create model error when brand not found
      */
     public function test_api_create_model_brand_not_found_response(): void
