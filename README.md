@@ -1,111 +1,66 @@
-# Nexu Backend Coding Exercise
-Our goal is to give you a small coding challenge that gives you a chance to show off your skills while giving you an idea of some of the problems that you may encounter at Nexu. We know you're busy with life, so we hope that you can spend around 2 hours working through this exercise. We don't expect you to finish in 2 hours, so don't worry if you can't. Submit what you have along with some notes on your thoughts and how you would proceed if you had more time. Most importantly, try to have some fun with it!
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-## Overview
-You just got hired to join the *cool* engineering team at *Nexu*! The first story in your sprint backlog is to build a backend application for an already existing frontend. The frontend needs the next routes:
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
+## About Laravel
 
-```
-                              GET    /brands
-                              GET    /brands/:id/models
-                              POST   /brands
-                              POST   /brands/:id/models
-                              PUT    /models/:id
-                              GET    /models
-```
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-#### GET /brands
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-List all brands 
-```json
-[
-  {"id": 1, "nombre": "Acura", "average_price": 702109},
-  {"id": 2, "nombre": "Audi", "average_price": 630759},
-  {"id": 3, "nombre": "Bentley", "average_price": 3342575},
-  {"id": 4, "nombre": "BMW", "average_price": 858702},
-  {"id": 5, "nombre": "Buick", "average_price": 290371},
-  "..."
-]
-```
-The average price of each brand is the average of its models average prices
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-#### GET /brands/:id/models
+## Learning Laravel
 
-List all models of the brand
-```json
-[
-  {"id": 1, "name": "ILX", "average_price": 303176},
-  {"id": 2, "name": "MDX", "average_price": 448193},
-  {"id": 1264, "name": "NSX", "average_price": 3818225},
-  {"id": 3, "name": "RDX", "average_price": 395753},
-  {"id": 354, "name": "RL", "average_price": 239050}
-]
-```
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-#### POST /brands
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-You may add new brands. A brand name must be unique.
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-```json
-{"name": "Toyota"}
-```
+## Laravel Sponsors
 
-If a brand name is already in use return a response code and error message reflecting it.
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
+### Premium Partners
 
-#### POST /brands/:id/models
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
-You may add new models to a brand. A model name must be unique inside a brand.
+## Contributing
 
-```json
-{"name": "Prius", "average_price": 406400}
-```
-If the brand id doesn't exist return a response code and error message reflecting it.
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-If the model name already exists for that brand return a response code and error message reflecting it.
+## Code of Conduct
 
-Average price is optional, if supply it must be greater than 100,000.
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
+## Security Vulnerabilities
 
-#### PUT /models/:id
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-You may edit the average price of a model.
+## License
 
-```json
-{"average_price": 406400}
-```
-The average_price must be greater then 100,000.
-
-#### GET /models?greater=&lower=
-
-List all models. 
-If greater param is included show all models with average_price greater than the param
-If lower param is included show all models with average_price lower than the param
-```
-# /models?greater=380000&lower=400000
-```
-```json
-[
-  {"id": 1264, "name": "NSX", "average_price": 3818225},
-  {"id": 3, "name": "RDX", "average_price": 395753}
-]
-```
-
-- Code all the endpoints and the logic needed
-
-- Create a database to store this information
-
-- Populate the database from the json included in this repository
-
-## Requirements
-- your code should be linted
-- your code should include at least a couple of tests
-- your code should include a `README.md` file in the root with instructions for building, running, and testing. It can also include notes on your thought process and any issues you may have run into.
-
-## Submission
-Please upload this repository to Github and submit to @remigioamc when complete. Also, we would love your feedback, so feel free to share your thoughts on the exercise!
-
-## Bonus
-Deploy your application so we can test it against our frontend. Share the URL.
-
-
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
