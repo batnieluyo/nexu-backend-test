@@ -65,8 +65,6 @@ class ApiBrandTest extends TestCase
 
         $response = $this->getJson('/brands');
 
-        $response->dump();
-
         $response->assertStatus(200);
 
         $response

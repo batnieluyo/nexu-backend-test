@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->constrained();
             $table->string('name');
             $table->string('slug');
-            $table->decimal('average_price')->nullable();
+            $table->unsignedInteger('average_price');
             $table->timestamps();
             $table->softDeletes();
         });
