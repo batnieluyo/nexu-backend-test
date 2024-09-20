@@ -16,7 +16,13 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return new BrandCollection(Brand::with('models:average_price')->all());
+        $brands = Brand::select(
+            'id', 'name'
+        )->with(
+            'models:id,brand_id,average_price'
+        )->get();
+
+        return new BrandCollection($brands);
     }
 
     /**
