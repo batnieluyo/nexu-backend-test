@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ModelFilterRequest;
 use App\Http\Requests\ModelRequest;
 use App\Http\Requests\ModelUpdateRequest;
 use App\Http\Resources\ModelCollection;
@@ -16,9 +17,20 @@ class ModelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ModelFilterRequest $request)
     {
-        return new ModelCollection(BrandModel::all());
+        $greater = $request->get('greater');
+        $lower = $request->get('lower');
+
+        $brandQuery = BrandModel::query()->select(
+            'id', 'name', 'average_price'
+        );
+
+        if ($greater) {
+            $brandQuery->whereBetween('average_price', [$greater, $lower]);
+        }
+
+        return new ModelCollection($brandQuery->orderBy('average_price', 'asc')->get());
     }
 
     /**

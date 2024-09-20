@@ -227,7 +227,7 @@ class ApiModelTest extends TestCase
     }
 
     /**
-     * A basic test example.
+     * Model put
      */
     public function test_api_model_put_successful_response(): void
     {
@@ -262,5 +262,46 @@ class ApiModelTest extends TestCase
         ]);
 
         $response->assertStatus(200)->assertJsonPath('average_price', $avg);
+    }
+
+    /**
+     * Model filters
+     */
+    public function test_api_model_filters_successful_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $valueOne = fake()->numberBetween(100000, 200000);
+        $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => $valueOne
+        ]);
+        $response->assertStatus(201);
+
+        $valueTwo = fake()->numberBetween(300000, 400000);
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Sportage 2025 SX',
+            'average_price' => $valueTwo
+        ]);
+        $response->assertStatus(201);
+
+        $response = $this->getJson('/models', [
+            'greater' => $valueOne,
+            'lower' => $valueTwo
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(2)->each(fn (AssertableJson $json) =>
+                    $json->hasAll([ 'id', 'name', 'average_price'])
+                )
+            );
     }
 }
