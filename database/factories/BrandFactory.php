@@ -26,7 +26,6 @@ class BrandFactory extends Factory
         return [
             'name' => $brandName,
             'slug' => Str::slug(Str::limit($brandName, 100, ''), '-'),
-            'hash' => md5($brandName),
         ];
     }
 }

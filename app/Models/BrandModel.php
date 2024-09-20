@@ -13,7 +13,6 @@ class BrandModel extends Model
         'brand_id',
         'name',
         'slug',
-        'hash',
         'average_price',
     ];
 

@@ -14,7 +14,6 @@ class Brand extends Model
     protected $fillable = [
         'name',
         'slug',
-        'hash',
     ];
 
     public function models()

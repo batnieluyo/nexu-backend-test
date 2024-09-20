@@ -9,7 +9,6 @@ test('brand create', function () {
     $brand = \App\Models\Brand::factory()->create([
         'name' => 'Toyota',
         'slug' => 'toyota',
-        'hash' => md5('toyota'),
     ]);
 
     $this->assertDatabaseCount('brands', 1);
