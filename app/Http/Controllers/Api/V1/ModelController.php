@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ModelRequest;
+use App\Http\Requests\ModelUpdateRequest;
 use App\Http\Resources\ModelCollection;
 use App\Http\Resources\ModelResource;
 use App\Models\Brand;
@@ -58,9 +59,13 @@ class ModelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ModelUpdateRequest $request, string $modelId)
     {
-        //
+        $model = BrandModel::findOrFail($modelId);
+        $model->average_price = $request->average_price;
+        $model->save();
+
+        return new ModelResource($model);
     }
 
     /**

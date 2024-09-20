@@ -21,6 +21,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('brands/*')) {
                 return response()->json([
+                    'message' => 'Vehicle brand not found.'
+                ], 404);
+            }
+
+            if ($request->is('models/*')) {
+                return response()->json([
                     'message' => 'Vehicle model not found.'
                 ], 404);
             }

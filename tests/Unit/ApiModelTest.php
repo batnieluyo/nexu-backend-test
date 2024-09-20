@@ -31,16 +31,12 @@ class ApiModelTest extends TestCase
 
         $response->assertStatus(201);
 
-        $response->dump('id');
-
         $brand = $response->json('id');
 
         $response = $this->postJson("brands/$brand/models", [
             'name' => 'Kia Seltos 2024 SX',
             'average_price' => fake()->numberBetween(1, 9999999)
         ]);
-
-        $response->dump();
 
         $response->assertStatus(201)->assertJsonPath('name', 'Kia Seltos 2024 SX');
     }
@@ -56,7 +52,7 @@ class ApiModelTest extends TestCase
         ]);
 
         $response->assertStatus(404)
-            ->assertJsonPath('message', 'Vehicle model not found.');
+            ->assertJsonPath('message', 'Vehicle brand not found.');
     }
 
     /**
@@ -69,8 +65,6 @@ class ApiModelTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-
-        $response->dump('id');
 
         $brand = $response->json('id');
 
@@ -90,7 +84,7 @@ class ApiModelTest extends TestCase
     }
 
     /**
-     * A basic test example.
+     * API model resource display all the collection
      */
     public function test_api_model_collection_successful_response(): void
     {
@@ -99,8 +93,6 @@ class ApiModelTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-
-        $response->dump('id');
 
         $brand = $response->json('id');
 
@@ -128,5 +120,56 @@ class ApiModelTest extends TestCase
                     $json->hasAll([ 'id', 'name', 'average_price'])
                 )
             );
+    }
+
+    /**
+     *  Display error when model not found
+     */
+    public function test_api_model_put_not_found_response(): void
+    {
+
+        $response = $this->patchJson("models/9999999", [
+            'average_price' => fake()->numberBetween(100000, 9999999)
+        ]);
+
+        $response->assertStatus(404)->assertJsonPath('message', 'Vehicle model not found.');
+    }
+
+    /**
+     * A basic test example.
+     */
+    public function test_api_model_put_successful_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $brand = $response->json('id');
+
+        $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => fake()->numberBetween(1, 9999999)
+        ]);
+
+        $response->assertStatus(201);
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Sportage 2025 SX',
+            'average_price' => fake()->numberBetween(1, 9999999)
+        ]);
+
+        $response->assertStatus(201);
+
+        $modelId = $response->json('id');
+
+        $avg = fake()->numberBetween(100000, 9999999);
+
+        $response = $this->patchJson("models/$modelId", [
+            'average_price' => $avg
+        ]);
+
+        $response->assertStatus(200)->assertJsonPath('average_price', $avg);
     }
 }
