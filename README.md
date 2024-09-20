@@ -1,5 +1,24 @@
 # Nexu API on Laravel 11.x
 
+# Live site
+You can visit the live site at :
+
+https://nexu-api.cluster-apps.dev
+
+with the same resources:
+```
+GET    /brands
+POST   /brands
+
+GET    /brands/:id/models
+POST   /brands/:id/models
+
+GET    /models
+PUT    /models/:id
+```
+
+# Development
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
