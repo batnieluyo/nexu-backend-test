@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -86,5 +87,46 @@ class ApiModelTest extends TestCase
         ]);
 
         $response->assertStatus(422)->assertJsonPath('message', 'The name has already been taken.');
+    }
+
+    /**
+     * A basic test example.
+     */
+    public function test_api_model_collection_successful_response(): void
+    {
+        $response = $this->postJson('/brands', [
+            'name' => 'KIA'
+        ]);
+
+        $response->assertStatus(201);
+
+        $response->dump('id');
+
+        $brand = $response->json('id');
+
+        $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Seltos 2024 SX',
+            'average_price' => fake()->numberBetween(1, 9999999)
+        ]);
+
+        $response->assertStatus(201);
+
+        $response = $this->postJson("brands/$brand/models", [
+            'name' => 'Kia Sportage 2025 SX',
+            'average_price' => fake()->numberBetween(1, 9999999)
+        ]);
+
+        $response->assertStatus(201);
+
+        $response = $this->getJson('/models');
+
+        $response->assertStatus(200);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has(2)->each(fn (AssertableJson $json) =>
+                    $json->hasAll([ 'id', 'name', 'average_price'])
+                )
+            );
     }
 }

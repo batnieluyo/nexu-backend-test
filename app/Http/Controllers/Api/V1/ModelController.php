@@ -4,18 +4,20 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ModelRequest;
+use App\Http\Resources\ModelCollection;
 use App\Http\Resources\ModelResource;
 use App\Models\Brand;
+use App\Models\BrandModel;
 use Illuminate\Http\Request;
 
-class BrandModelController extends Controller
+class ModelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return new ModelCollection(BrandModel::all());
     }
 
     /**
