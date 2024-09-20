@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandRequest;
+use App\Http\Resources\BrandResource;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -26,9 +29,11 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
-        //
+        return (
+            new BrandResource(Brand::create($request->validated()))
+        )->response()->setStatusCode(201);
     }
 
     /**
